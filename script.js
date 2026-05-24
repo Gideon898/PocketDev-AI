@@ -1,69 +1,75 @@
-const API_KEY = "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";
-
-const chatBox = document.getElementById("chatBox");
-const input = document.getElementById("userInput");
-const btn = document.getElementById("sendBtn");
-
-btn.addEventListener("click", sendMessage);
-hi
-input.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") sendMessage();
-});
-
-async function sendMessage() {
-
-    const message = input.value.trim();
-    if (!message) return;
-
-    addMessage(message, "user");
-    input.value = "";
-
-    const botDiv = addMessage("Thinking...", "bot");
-
-    try {
-
-        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-            method: "POST",
-            headers: {
-                "Authorization": "Bearer " + API_KEY,
-                "Content-Type": "application/json",
-                "HTTP-Referer": "https://replit.com",
-                "X-Title": "PocketDev AI"
-            },
-            body: JSON.stringify({
-                model: "openai/gpt-4o-mini",
-                messages: [
-                    {
-                        role: "user",
-                        content: message
-                    }
-                ]
-            })
-        });
-
-        const data = await response.json();
-
-        console.log(data);
-
-        if (data.error) {
-            botDiv.innerText = "Error: " + data.error.message;
-            return;
-        }
-
-        botDiv.innerText =
-            data.choices?.[0]?.message?.content || "No response from AI.";
-
-    } catch (err) {
-        console.log(err);
-        botDiv.innerText = "Network error / request failed.";
-    }
+body{
+    margin:0;
+    padding:0;
+    background:#0f172a;
+    font-family:Arial;
+    color:white;
 }
 
-function addMessage(text, type) {
-    const div = document.createElement("div");
-    div.className = type;
-    div.innerText = text;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-    return div;
+.app{
+    width:90%;
+    max-width:700px;
+    margin:auto;
+    margin-top:20px;
+}
+
+header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+#chatBox{
+    background:#1e293b;
+    height:500px;
+    overflow-y:auto;
+    border-radius:12px;
+    padding:15px;
+}
+
+.message{
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    max-width:80%;
+    word-wrap:break-word;
+}
+
+.user{
+    background:#38bdf8;
+    margin-left:auto;
+    text-align:right;
+}
+
+.bot{
+    background:#334155;
+    margin-right:auto;
+}
+
+.input-area{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+input{
+    flex:1;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    font-size:16px;
+}
+
+button{
+    padding:15px 20px;
+    border:none;
+    border-radius:10px;
+    background:#38bdf8;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
 }

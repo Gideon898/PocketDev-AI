@@ -1,76 +1,44 @@
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
-const sendBtn = document.getElementById("sendBtn");
 
-sendBtn.addEventListener("click", sendMessage);
-
-userInput.addEventListener("keypress", (e) => {
-    if(e.key === "Enter"){
-        sendMessage();
-    }
-});
-
-async function sendMessage(){
+async function sendMessage() {
 
     const message = userInput.value.trim();
-
-    if(!message) return;
+    if (!message) return;
 
     addMessage(message, "user");
-
     userInput.value = "";
 
-    const thinkingMessage = addMessage(
-        "Thinking...",
-        "bot"
-    );
+    const botDiv = addMessage("Thinking...", "bot");
 
-    try{
+    try {
 
-     const response = await fetch(
-    "https://pocketdev-ai.onrender.com/chat",
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message: message
-        })
-    }
-);
+        const response = await fetch("https://pocketdev-ai.onrender.com/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message })
+        });
 
         const data = await response.json();
 
-        console.log(data);
+        botDiv.innerText =
+            data.choices?.[0]?.message?.content ||
+            data.error ||
+            "No response from AI.";
 
-        thinkingMessage.innerText =
-            data.choices?.[0]?.message?.content
-            || "No response from AI.";
-
-    }
-
-    catch(error){
-
-        console.log(error);
-
-        thinkingMessage.innerText =
-            "Server error.";
+    } catch (err) {
+        console.log(err);
+        botDiv.innerText = "Server error.";
     }
 }
 
-function addMessage(text, sender){
-
+function addMessage(text, type) {
     const div = document.createElement("div");
-
-    div.classList.add("message");
-    div.classList.add(sender);
-
+    div.classList.add("message", type);
     div.innerText = text;
-
     chatBox.appendChild(div);
-
     chatBox.scrollTop = chatBox.scrollHeight;
-
     return div;
 }

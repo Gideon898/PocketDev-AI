@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PocketDev AI</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -10,28 +9,17 @@
 
     <div class="app">
 
-        <header>
-            <h1>PocketDev AI 🤖</h1>
-            <p>Your AI Coding Assistant</p>
-        </header>
+        <h1>PocketDev AI 🤖</h1>
 
         <div id="chatBox"></div>
 
         <div class="input-area">
-            <input
-                type="text"
-                id="userInput"
-                placeholder="Ask anything..."
-            />
-
-            <button id="sendBtn">
-                Send
-            </button>
+            <input id="userInput" placeholder="Ask something..." />
+            <button onclick="sendMessage()">Send</button>
         </div>
 
     </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>

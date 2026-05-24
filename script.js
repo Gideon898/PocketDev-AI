@@ -1,11 +1,11 @@
-const API_KEY = "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";
+const API_KEY = "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";
 
 const chatBox = document.getElementById("chatBox");
 const input = document.getElementById("userInput");
 const btn = document.getElementById("sendBtn");
 
 btn.addEventListener("click", sendMessage);
-
+hi
 input.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
 });

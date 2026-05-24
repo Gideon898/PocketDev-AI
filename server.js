@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
@@ -10,15 +11,10 @@ const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.OPENROUTER_API_KEY;
 
 app.post("/chat", async (req, res) => {
+
     try {
 
-        const userMessage = req.body.message;
-
-        if (!API_KEY) {
-            return res.json({
-                error: "API key not set in Render environment variables"
-            });
-        }
+        const message = req.body.message;
 
         const response = await fetch(
             "https://openrouter.ai/api/v1/chat/completions",
@@ -35,7 +31,7 @@ app.post("/chat", async (req, res) => {
                     messages: [
                         {
                             role: "user",
-                            content: userMessage
+                            content: message
                         }
                     ]
                 })
@@ -44,16 +40,14 @@ app.post("/chat", async (req, res) => {
 
         const data = await response.json();
 
-        console.log("OPENROUTER RESPONSE:", data);
-
         return res.json(data);
 
     } catch (error) {
 
-        console.log("SERVER ERROR:", error);
+        console.log(error);
 
         return res.status(500).json({
-            error: error.message
+            error: "Server error"
         });
     }
 });

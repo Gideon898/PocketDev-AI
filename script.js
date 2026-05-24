@@ -27,18 +27,18 @@ async function sendMessage(){
 
     try{
 
-        const response = await fetch(
-            "https://YOUR-RENDER-URL.onrender.com/chat",
-            {
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({
-                    message:message
-                })
-            }
-        );
+     const response = await fetch(
+    "https://pocketdev-ai.onrender.com/chat",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message: message
+        })
+    }
+);
 
         const data = await response.json();
 
